@@ -1,3 +1,3 @@
-## Todo
+## Shop Clevertec
 
-- Навести порядок в package.json (dependencies)
+проект находится в разработке
