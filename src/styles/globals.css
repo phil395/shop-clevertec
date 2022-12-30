@@ -5,5 +5,10 @@
 @layer base {
   html {
     font-family: 'League Spartan', system-ui, sans-serif;
+    letter-spacing: 0.05em;
+  }
+
+  svg {
+    display: inline-block;
   }
 }

@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import { trpc } from '../utils/trpc';
-import { Test } from '../components/Test';
+import { Layout } from '../components/Layout';
 
 
 const Home = () => {
-  const { data } = trpc.hello.useQuery({ text: 'client' });
+  // const { data } = trpc.hello.useQuery({ text: 'client' });
   return (
     <>
       <Head>
@@ -14,8 +14,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Test />
-        <p>{data?.greeting}</p>
+        <Layout />
       </main>
     </>
   );
