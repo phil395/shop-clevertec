@@ -4,7 +4,7 @@ import clsx from "clsx";
 import styles from './Hamburger.module.css';
 
 interface Props {
-	onClick: () => void;
+	onClick: React.MouseEventHandler<HTMLButtonElement>;
 	isActive: boolean;
 }
 

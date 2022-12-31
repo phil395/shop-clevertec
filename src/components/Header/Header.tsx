@@ -1,7 +1,6 @@
-import { FC, useRef, useState } from "react";
-import { useMatchMedia } from "../../hooks";
+import { FC, useRef } from "react";
 import { Address } from "../Address";
-import { Menu, MenuMobile } from "../Menu";
+import { Menu } from "../Menu";
 import { Navbar } from "../Navbar";
 import { Socials } from "../Socials";
 import { Logo } from "./Logo";
@@ -24,10 +23,7 @@ export const Header: FC<Props> = ({ topPortalRef }) => {
 			<section className="container flex xl:justify-between items-center py-5 text-dark">
 				<Logo />
 				<Menu menuPortalRef={menuPortalRef} />
-				<Navbar
-					topPortalRef={topPortalRef}
-					renderMenuMobile={(setModal, isActive) => <MenuMobile setModal={setModal} isActive={isActive} />}
-				/>
+				<Navbar topPortalRef={topPortalRef} />
 			</section>
 			<div id="menu-portal" ref={menuPortalRef}></div>
 

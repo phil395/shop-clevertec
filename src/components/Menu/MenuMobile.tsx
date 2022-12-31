@@ -1,17 +1,12 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { MENU } from "../../content";
-import { useMatchMedia } from "../../hooks";
+import { ScreenState, useMatchMedia } from "../../hooks";
+import { Portal } from "../Portal";
 import { Hamburger } from "./Hamburger";
 
-interface MenuMobileProps {
-	setModal: React.Dispatch<MenuMobileType>;
-	isActive: boolean;
+interface Props {
+	menuPortalRef: React.RefObject<HTMLDivElement>;
 }
-
-export type MenuMobileType = {
-	name: 'menu',
-	Component: typeof List;
-};
 
 const List: FC<{}> = () => {
 	return <ul className="flex flex-row space-y-5 text-dark">
@@ -23,28 +18,46 @@ const List: FC<{}> = () => {
 	</ul>;
 };
 
+type ButtonProp = { onClick: Parameters<typeof Hamburger>[0]['onClick']; };
 
-export const MenuMobile: FC<MenuMobileProps> = ({ setModal, isActive }) => {
-	const { xs, sm, md, lg, xl } = useMatchMedia();
+const Button: FC<ButtonProp> = ({ onClick }) => {
+	return (
+		<button
+			onClick={onClick}
+			className='mr-8 pt-1 px-3 text-lg text-dark border-2 rounded-lg uppercase tracking-wide font-medium '
+		>
+			Catalog
+		</button>
+	);
+};
 
-	if (xl) return null;
-	const modal: MenuMobileType = { name: 'menu', Component: List };
-	const onClick = () => setModal(modal);
+const getCta = (onClick: ButtonProp['onClick'], isActive: boolean, screenSizes: ScreenState) => {
+	const { xs, sm, md, lg } = screenSizes;
+	if (md || lg) return <Button onClick={onClick} />;
+	if (xs || sm) return <Hamburger onClick={onClick} isActive={isActive} />;
+	throw new Error('Incorrect screen size value. Check MenuMobile component and useMatchMedia hook');
+};
 
-	if (md || lg) {
-		return (
-			<button
-				onClick={onClick}
-				className='mr-8 pt-1 px-3 text-lg text-dark border-2 rounded-lg uppercase tracking-wide font-medium '
-			>
-				Catalog
-			</button>
-		);
-	}
 
-	if (xs || sm) {
-		return <Hamburger onClick={onClick} isActive={isActive} />;
-	}
+export const MenuMobile: FC<Props> = ({ menuPortalRef }) => {
+	const screenSizes = useMatchMedia();
+	const [isActive, setIsActive] = useState(false);
 
-	return null;
+	const onClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+		setIsActive(v => !v);
+	};
+
+	return (
+		<>
+			{getCta(onClick, isActive, screenSizes)}
+
+			{isActive ? (
+				<Portal portalRef={menuPortalRef}>
+					<div className="text-green text-2xl text-center">
+						Mobile menu portal
+					</div>
+				</Portal>
+			) : null}
+		</>
+	);
 };

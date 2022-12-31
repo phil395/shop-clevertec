@@ -1,19 +1,17 @@
 import { FC, useState } from "react";
 import { Icon } from "../Icon";
-import { MenuMobileType } from "../Menu/MenuMobile";
 import { Overlay } from "../Overlay";
 import { Portal } from "../Portal";
 import { modals } from "./Navbar.data";
 
 interface Props {
 	topPortalRef: React.RefObject<HTMLDivElement>;
-	renderMenuMobile: (setModal: React.Dispatch<MenuMobileType>, isActive: boolean) => JSX.Element;
 }
 
-type ModalType = (typeof modals)[number] | MenuMobileType;
+type ModalType = (typeof modals)[number];
 export type ModalName = ModalType['name'] | null;
 
-export const Navbar: FC<Props> = ({ topPortalRef, renderMenuMobile }) => {
+export const Navbar: FC<Props> = ({ topPortalRef }) => {
 	const [modal, setModal] = useState<ModalType | null>(null);
 
 	const { Component: ModalComponent } = modal ?? {};
@@ -21,12 +19,8 @@ export const Navbar: FC<Props> = ({ topPortalRef, renderMenuMobile }) => {
 		setModal(null);
 	};
 
-	const activeModalName = modal?.name ?? null;
-
 	return (
 		<>
-			{renderMenuMobile(setModal, activeModalName === 'menu')}
-
 			<ul className="flex -mr-1 md:-mr-3" >
 				{modals.map((modal) => (
 					<li

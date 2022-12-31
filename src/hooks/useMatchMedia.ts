@@ -26,7 +26,7 @@ const SCREEN_SIZES = {
 
 const SERVER_STATE: ScreenState = { xs: false, sm: false, md: false, lg: false, xl: true };
 
-type ScreenState = {
+export type ScreenState = {
 	[Screen in keyof typeof SCREEN_SIZES]: boolean
 };
 
