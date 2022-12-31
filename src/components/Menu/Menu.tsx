@@ -1,41 +1,51 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { MENU } from "../../content";
 import { useMatchMedia } from "../../hooks";
 import { Portal } from "../Portal";
 import { MenuMobile } from "./MenuMobile";
+import { MenuDropdown, MenuDropdownProps } from "./MenuDropdown";
 
 interface Props {
 	menuPortalRef: React.RefObject<HTMLDivElement>;
 }
 
+type Dropdown = MenuDropdownProps['catalog'];
+type PointerHandler = React.PointerEventHandler<HTMLLIElement>;
 
 export const Menu: FC<Props> = ({ menuPortalRef }) => {
 	const { xl } = useMatchMedia();
+	const [dropdown, setDropdown] = useState<Dropdown | null>(null);
 
-	const onPointerEnter: React.PointerEventHandler<HTMLAnchorElement> = (e) => {
-		console.log('caught');
-	};
 
 	if (xl) return (
 		<>
-			<ul className="flex space-x-8 xl:mt-2">
-				{MENU.map(({ title, link, catalog }, index) => (
-					<li key={index}>
-						<a
-							href={link}
+			<ul className="flex xl:mt-2">
+				{MENU.map(({ title, link, catalog }, index) => {
+					const onPointerEnter: PointerHandler = (e) => {
+						if (!catalog) return;
+						setDropdown(catalog);
+					};
+					const onPointerLeave: PointerHandler = () => {
+						setDropdown(null);
+					};
+					return (
+						<li
+							key={index}
+							className='py-3 px-3 first:pl-0 last:pr-0'
 							onPointerEnter={catalog ? onPointerEnter : undefined}
+							onPointerLeave={catalog ? onPointerLeave : undefined}
 						>
-							{title}
-						</a>
-					</li>
-				))}
+							<a href={link}>{title}</a>
+						</li>
+					);
+				})}
 			</ul>
 
-			<Portal portalRef={menuPortalRef}>
-				<div className="text-yellow text-2xl text-center">
-					Hello from desktop Menu portal
-				</div>
-			</Portal>
+			{dropdown && (
+				<Portal portalRef={menuPortalRef}>
+					<MenuDropdown catalog={dropdown as Dropdown} />
+				</Portal>
+			)}
 		</>
 	);
 

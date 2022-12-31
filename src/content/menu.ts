@@ -1,4 +1,13 @@
-export const MENU = [
+export interface Menu {
+	title: string;
+	link: string;
+	catalog?: {
+		group: string;
+		links: { name: string; href: string; }[];
+	}[];
+}
+
+export const MENU: Menu[] = [
 	{
 		title: 'About Us',
 		link: '#'
