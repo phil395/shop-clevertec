@@ -58,35 +58,35 @@ module.exports = {
         },
       });
       addVariant('not-last', '&:not(:last-child)');
-      // addUtilities({
-      //   '.flex-center': {
-      //     display: 'flex',
-      //     justifyContent: 'center',
-      //     alignItems: 'center'
-      //   },
-      //   '.scrollbar-mod': {
-      //     '&::-webkit-scrollbar': {
-      //       width: '15px'
-      //     },
-      //     '&::-webkit-scrollbar-track': {
-      //       background: '#f1f1f1',
-      //       borderRadius: '25px',
-      //       border: '4px solid transparent',
-      //       backgroundClip: 'content-box'
-      //     },
-      //     '&::-webkit-scrollbar-thumb': {
-      //       background: '#ccc',
-      //       borderRadius: '25px',
-      //       border: '4px solid transparent',
-      //       backgroundClip: 'content-box'
-      //     },
-      //     '&::-webkit-scrollbar-thumb:hover': {
-      //       background: '#b3b3b3',
-      //       border: '4px solid transparent',
-      //       backgroundClip: 'content-box'
-      //     },
-      //   }
-      // })
+      addUtilities({
+        '.flex-center': {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        },
+        '.scrollbar-mod': {
+          '&::-webkit-scrollbar': {
+            width: '15px'
+          },
+          '&::-webkit-scrollbar-track': {
+            background: '#f1f1f1',
+            borderRadius: '25px',
+            border: '4px solid transparent',
+            backgroundClip: 'content-box'
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: '#ccc',
+            borderRadius: '25px',
+            border: '4px solid transparent',
+            backgroundClip: 'content-box'
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            background: '#b3b3b3',
+            border: '4px solid transparent',
+            backgroundClip: 'content-box'
+          },
+        }
+      })
     }),
   ],
 }
