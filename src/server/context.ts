@@ -1,6 +1,6 @@
 import { inferAsyncReturnType } from "@trpc/server";
 import { CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { prisma } from "../../db/prisma";
+import { prisma } from "../../prisma";
 // import { getSession } from 'next-auth/react';
 
 /**

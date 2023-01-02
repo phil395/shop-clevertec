@@ -11,16 +11,16 @@ datasource db {
 }
 
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  slug     String    @unique
-  products Product[]
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  slug       String       @unique
+  productSku ProductSku[]
 }
 
 model Brand {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  products Product[]
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  productSku ProductSku[]
 }
 
 model Size {
@@ -46,32 +46,40 @@ model Image {
 }
 
 model Review {
-  id        Int     @id @default(autoincrement())
-  author    String
-  content   String
-  rating    Int // sqlite don't support enums. Set Enum type after
-  published Boolean @default(true)
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  productId Int
+  id         Int        @id @default(autoincrement())
+  author     String
+  content    String
+  rating     Int        @default(5) // sqlite don't support enums. Set Enum type after
+  published  Boolean    @default(true)
+  productSku ProductSku @relation(fields: [sku], references: [sku], onDelete: Cascade, onUpdate: Cascade)
+  sku        Int
 }
 
 model Product {
-  id         Int      @id @default(autoincrement())
-  name       String
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  categoryId Int
-  brand      Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  brandId    Int
-  material   String
-  rating     Int      @default(5) // sqlite don't support enums. Set Enum type after
-  priceBase  Float
-  size       Size     @relation(fields: [sizeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id         Int        @id @default(autoincrement())
+  productSku ProductSku @relation(fields: [sku], references: [sku], onDelete: Cascade, onUpdate: Cascade)
+  sku        Int
+  size       Size       @relation(fields: [sizeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   sizeId     Int
-  discount   Int      @default(0)
-  color      Color    @relation(fields: [colorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  color      Color      @relation(fields: [colorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   colorId    Int
   images     Image[]
+  rest       Int
+}
+
+model ProductSku {
+  sku        Int       @id @default(autoincrement())
+  name       String
+  products   Product[]
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId Int
+  brand      Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  brandId    Int
+  material   String
   reviews    Review[]
+  rating     Int       @default(5) // sqlite don't support enums. Set Enum type after
+  discount   Int       @default(0)
+  priceBase  Float
 
   isNewArrivals Boolean @default(false)
   isSpecial     Boolean @default(false)
