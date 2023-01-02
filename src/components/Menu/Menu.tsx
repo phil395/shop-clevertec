@@ -4,6 +4,9 @@ import { useMatchMedia } from "../../hooks";
 import { Portal } from "../Portal";
 import { MenuMobile } from "./MenuMobile";
 import { MenuDropdown, MenuDropdownProps } from "./MenuDropdown";
+import clsx from "clsx";
+
+import styles from './Menu.module.css';
 
 interface Props {
 	menuPortalRef: React.RefObject<HTMLDivElement>;
@@ -23,7 +26,9 @@ export const Menu: FC<Props> = ({ menuPortalRef }) => {
 						key={index}
 					>
 						<a
-							className='py-6 px-3 block'
+							className={clsx('py-6 px-3 block relative transition-all', {
+								[styles.active]: dropdown?.title === title
+							})}
 							onPointerEnter={catalog ? () => setDropdown({ catalog, title }) : undefined}
 							onPointerLeave={catalog ? () => setDropdown(null) : undefined}
 							href={link}
