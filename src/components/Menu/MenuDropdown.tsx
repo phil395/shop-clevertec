@@ -1,13 +1,18 @@
 import { FC } from "react";
 import { Menu } from "../../content";
 
-export interface MenuDropdownProps {
-	catalog: Exclude<Menu['catalog'], undefined>;
+type PointerEvents = Pick<
+	React.HTMLAttributes<HTMLDivElement>,
+	'onPointerEnter' | 'onPointerLeave'
+>;
+
+export interface MenuDropdownProps extends PointerEvents {
+	dropdown: Required<Pick<Menu, 'catalog' | 'title'>>;
 }
 
-export const MenuDropdown: FC<MenuDropdownProps> = ({ catalog }) => {
+export const MenuDropdown: FC<MenuDropdownProps> = ({ dropdown: { title, catalog }, ...pointerEvents }) => {
 	return (
-		<section className="py-7 bg-grey-100">
+		<dialog open {...pointerEvents} className="py-7 w-full bg-grey-100">
 			<nav className="container flex">
 				{catalog.map((column, index) => (
 					<div
@@ -31,6 +36,8 @@ export const MenuDropdown: FC<MenuDropdownProps> = ({ catalog }) => {
 			</nav>
 
 
-		</section>
+			{/* <Bestsellers /> */}
+
+		</dialog>
 	);
 };

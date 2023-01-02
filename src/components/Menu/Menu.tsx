@@ -9,41 +9,38 @@ interface Props {
 	menuPortalRef: React.RefObject<HTMLDivElement>;
 }
 
-type Dropdown = MenuDropdownProps['catalog'];
-type PointerHandler = React.PointerEventHandler<HTMLLIElement>;
+type Dropdown = MenuDropdownProps['dropdown'];
 
 export const Menu: FC<Props> = ({ menuPortalRef }) => {
 	const { xl } = useMatchMedia();
 	const [dropdown, setDropdown] = useState<Dropdown | null>(null);
 
-
 	if (xl) return (
 		<>
 			<ul className="flex xl:mt-2">
-				{MENU.map(({ title, link, catalog }, index) => {
-					const onPointerEnter: PointerHandler = (e) => {
-						if (!catalog) return;
-						setDropdown(catalog);
-					};
-					const onPointerLeave: PointerHandler = () => {
-						setDropdown(null);
-					};
-					return (
-						<li
-							key={index}
-							className='py-3 px-3 first:pl-0 last:pr-0'
-							onPointerEnter={catalog ? onPointerEnter : undefined}
-							onPointerLeave={catalog ? onPointerLeave : undefined}
+				{MENU.map(({ title, link, catalog }, index) => (
+					<li
+						key={index}
+					>
+						<a
+							className='py-6 px-3 block'
+							onPointerEnter={catalog ? () => setDropdown({ catalog, title }) : undefined}
+							onPointerLeave={catalog ? () => setDropdown(null) : undefined}
+							href={link}
 						>
-							<a href={link}>{title}</a>
-						</li>
-					);
-				})}
+							{title}
+						</a>
+					</li>
+				))}
 			</ul>
 
 			{dropdown && (
 				<Portal portalRef={menuPortalRef}>
-					<MenuDropdown catalog={dropdown as Dropdown} />
+					<MenuDropdown
+						dropdown={dropdown as Dropdown}
+						onPointerEnter={() => setDropdown(dropdown)}
+						onPointerLeave={() => setDropdown(null)}
+					/>
 				</Portal>
 			)}
 		</>
