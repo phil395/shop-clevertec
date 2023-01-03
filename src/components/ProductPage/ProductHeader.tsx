@@ -1,5 +1,8 @@
 import type { FC } from "react";
 import { trpc } from "../../utils/trpc";
+import { BreadcrumbItem, Breadcrumb } from "../Breadcrumb";
+import { Icon } from "../Icon";
+import { Rating, RatingValue } from "../Rating";
 
 interface Props {
 	sku: number;
@@ -10,13 +13,18 @@ export const ProductHeader: FC<Props> = ({ sku }) => {
 		// from cache
 		select: (data) => {
 			if (!data) return;
+			const path = [
+				{ name: 'home', url: '/' },
+				{ name: data.category.name, url: data.category.slug },
+				{ name: data.name }
+			] as BreadcrumbItem[];
 			return {
-				path: ['home', data.category.name, data.name],
+				path,
 				name: data.name,
-				rating: data.rating,
+				rating: data.rating as RatingValue,
 				reviewCount: data.reviews.length,
 				sku: data.sku,
-				availability: data.products.some(product => product.rest > 0)
+				available: data.products.some(product => product.rest > 0)
 			};
 		}
 	});
@@ -24,11 +32,35 @@ export const ProductHeader: FC<Props> = ({ sku }) => {
 	if (!data) return null;
 
 	return (
-		<section>
-			Hello from ProductHeader
-			<pre>
-				{JSON.stringify(data, null, 2)}
-			</pre>
+		<section className="bg-grey-100 py-3">
+			<div className="container">
+				<div className="flex justify-between items-center space-x-2">
+					<Breadcrumb path={data.path} />
+					<button className="text-dark/60 whitespace-nowrap text-center">
+						<Icon name="share" size={20} className='-mt-1 mr-1' />
+						<span>Share</span>
+					</button>
+				</div>
+
+				<h1 className="my-3 text-2xl font-semibold text-center">{data.name}</h1>
+
+				<div className="flex items-center flex-col-reverse sm:flex-row sm:space-x-4 text-sm">
+					<span className="flex-grow flex items-center space-x-2">
+						<Rating value={data.rating} size="small" className="-mt-1" />
+						<span>{data.reviewCount} Reviews</span>
+					</span>
+
+					<span>
+						<span>SKU:</span>
+						<span className="pl-1 font-semibold">{data.sku}</span>
+					</span>
+
+					<span>
+						<span>Availability:</span>
+						<span className="pl-1 font-semibold">{data.available ? 'In Stock' : 'Out Of Stock'}</span>
+					</span>
+				</div>
+			</div>
 		</section>
 	);
 };
