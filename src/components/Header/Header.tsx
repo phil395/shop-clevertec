@@ -20,14 +20,14 @@ export const Header: FC<Props> = ({ topPortalRef }) => {
 					<Socials />
 				</div>
 			</section>
-			<section className="py-4 md:p-5 xl:py-0 text-dark shadow-sm">
+			<section className="py-4 md:py-5 xl:py-0 text-dark shadow-sm">
 				<div className="container flex xl:justify-between items-center">
 					<Logo />
 					<Menu menuPortalRef={menuPortalRef} />
 					<Navbar topPortalRef={topPortalRef} />
 				</div>
 			</section>
-			<div id="menu-portal" ref={menuPortalRef}></div>
+			<div id="menu-portal" ref={menuPortalRef} className="relative"></div>
 
 		</header>
 	);
