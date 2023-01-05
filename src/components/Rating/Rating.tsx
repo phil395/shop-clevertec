@@ -13,20 +13,19 @@ interface Props {
 export const Rating: FC<Props> = ({ value, size, className }) => {
 	return (
 		<span className={className}>
-			{Array.from({ length: 5 }, (_, index) => {
-				return (
-					<Icon
-						name="star"
-						size={size === 'small' ? 14 : 20}
-						className={clsx({
-							['text-yellow']: index < value,
-							['text-grey-500']: index >= value,
-							['not-last:mr-2']: size !== 'small',
-							['not-last:mr-1']: size === 'small'
-						})}
-					/>
-				);
-			})}
+			{Array.from({ length: 5 }, (_, index) => (
+				<Icon
+					key={index}
+					name="star"
+					size={size === 'small' ? 14 : 20}
+					className={clsx({
+						['text-yellow']: index < value,
+						['text-grey-500']: index >= value,
+						['not-last:mr-2']: size !== 'small',
+						['not-last:mr-1']: size === 'small'
+					})}
+				/>
+			))}
 		</span>
 	);
 };
