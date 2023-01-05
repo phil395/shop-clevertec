@@ -64,6 +64,9 @@ module.exports = {
           justifyContent: 'center',
           alignItems: 'center'
         },
+        '.flex-0': {
+          flex: '0 0 auto'
+        },
         '.scrollbar-mod': {
           '&::-webkit-scrollbar': {
             width: '15px'
@@ -85,6 +88,15 @@ module.exports = {
             border: '4px solid transparent',
             backgroundClip: 'content-box'
           },
+        },
+        '.scrollbar-hide': {
+          '&::-webkit-scrollbar': {
+            display: 'none'
+          },
+          '&': {
+            '-ms-overflow-style': 'none', /* IE and Edge */
+            'scrollbar-width': 'none' /* Firefox */
+          }
         }
       })
     }),
