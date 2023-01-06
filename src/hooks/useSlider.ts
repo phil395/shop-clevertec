@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 
 interface ISliderController {
-	previews?: Element[];
-	elements?: Element[];
-	root?: HTMLElement;
-	rootBounds?: DOMRectReadOnly;
+	previews?: HTMLElement[];
+	elements?: HTMLElement[];
+	elementsRoot?: HTMLElement;
+	// rootBounds?: DOMRectReadOnly;
 	subscribers: ISubscribers;
 }
 
@@ -17,62 +17,67 @@ interface ISubscribers {
 	onLastSlide?: SubscriberCallback;
 }
 
-const INACTIVE_CLASS_PREVIEW = 'grayscale';
+const CSS_CLASS = {
+	inactivePreview: 'grayscale',
+	relative: 'relative'
+};
 
 type ContainerType = Extract<keyof ISliderController, 'elements' | 'previews'>;
 
 export const useSlider = () => {
 	const controller = useRef<ISliderController>({ subscribers: {} } /* initController */);
 
-	const selectPreview = (element: Element) => {
+
+	const selectPreview = (element: HTMLElement) => {
 		const { previews, elements } = controller.current;
 		if (!previews || !elements) return;
 
+		// find target element
 		const index = elements.indexOf(element);
 		const targetPreview = previews[index];
 		if (!targetPreview) return;
 
+		// treat classes
 		for (const preview of previews) {
-			preview.classList.add(INACTIVE_CLASS_PREVIEW);
+			preview.classList.add(CSS_CLASS.inactivePreview);
 		}
-		targetPreview.classList.remove(INACTIVE_CLASS_PREVIEW);
+		targetPreview.classList.remove(CSS_CLASS.inactivePreview);
 
-		requestIdleCallback(() => {
-			// browser can't scroll 2 elements at the same time
-			// so make sure that the scrolling of the slide with the elements is completed
-			targetPreview.scrollIntoView();
-		});
-
+		// treat scroll
+		const { offsetTop } = targetPreview;
+		const previewRoot = targetPreview.parentElement;
+		previewRoot?.scrollTo(0, offsetTop);
 	};
 
+
 	const selectElement = (index: number) => {
-		const { elements } = controller.current;
-
-		if (!elements) return;
-
+		const { elements, elementsRoot } = controller.current;
 		if (
-			index > elements.length - 1 ||
-			index < 0
+			!elements || !elementsRoot ||
+			index > elements.length - 1 || index < 0
 		) {
 			return;
 		}
-
-		elements[index]?.scrollIntoView();
+		const targetElement = elements[index];
+		const { offsetLeft } = targetElement;
+		elementsRoot.scrollTo(offsetLeft, 0);
 	};
+
 
 	const toggleSlide = (direction: 'left' | 'right') => {
 		return () => {
-			const { root, rootBounds } = controller.current;
-			if (!root || !rootBounds) return;
-			const { width } = rootBounds;
+			const { elementsRoot } = controller.current;
+			if (!elementsRoot) return;
+			const { width } = elementsRoot.getBoundingClientRect();
 
 			if (direction === 'left') {
-				root.scrollBy(width, 0);
+				elementsRoot.scrollBy(width, 0);
 			} else {
-				root.scrollBy(0 - width, 0);
+				elementsRoot.scrollBy(0 - width, 0);
 			}
 		};
 	};
+
 
 	const checkAndNotify = (firstVisible: Element, lastVisible: Element) => {
 		const { elements, subscribers } = controller.current;
@@ -85,8 +90,9 @@ export const useSlider = () => {
 		subscribers.onLastSlide?.(isLastSlide);
 	};
 
+
 	useEffect(() => {
-		const { elements, root, previews } = controller.current;
+		const { elements, elementsRoot, previews } = controller.current;
 		if (!elements) return;
 
 		const handleIntersect: IntersectionObserverCallback = (entries) => {
@@ -96,19 +102,16 @@ export const useSlider = () => {
 					activeEntries.push(entry);
 				}
 			}
-
 			const lastEntry = activeEntries.pop();
 			const firstEntry = activeEntries.length ? activeEntries[0] : lastEntry;
 			if (!lastEntry || !firstEntry) return;
 
-			controller.current.rootBounds = lastEntry.rootBounds as DOMRectReadOnly; // rewrite to detect in 'toggleSlide' ???
-
 			checkAndNotify(firstEntry.target, lastEntry.target);
-			if (previews) selectPreview(lastEntry.target);
+			if (previews) selectPreview(lastEntry.target as HTMLElement);
 		};
 
 		const observer = new IntersectionObserver(handleIntersect, {
-			root,
+			root: elementsRoot,
 			threshold: 1
 		});
 
@@ -120,20 +123,19 @@ export const useSlider = () => {
 
 	}, [controller.current.elements]);
 
+
 	const initializeController = (type: ContainerType) => {
 		return (node: HTMLElement | null) => {
 			if (!node) {
-				controller.current = { subscribers: {} }; /* reset Controller */
+				controller.current = { subscribers: {} }; // reset Controller
 				return;
 			}
-			controller.current[type] = Array.from(node.children);
+			controller.current[type] = Array.from(node.children) as HTMLElement[];
+			node.classList.add(CSS_CLASS.relative); // set as offsetParent
 			if (type === 'previews') return;
-			controller.current.root = node;
+			controller.current.elementsRoot = node;
 		};
 	};
-
-	const initializeElements = initializeController('elements');
-	const initializePreviews = initializeController('previews');
 
 
 	const subscribe = <T extends keyof ISubscribers>(type: T) => {
@@ -151,8 +153,8 @@ export const useSlider = () => {
 
 	// TODO: add useMemo
 	return {
-		initializeElements,
-		initializePreviews,
+		initializeElements: initializeController('elements'),
+		initializePreviews: initializeController('previews'),
 		nextSlide: toggleSlide('right'),
 		prevSlide: toggleSlide('left'),
 		selectElement, // scrollToElement,
