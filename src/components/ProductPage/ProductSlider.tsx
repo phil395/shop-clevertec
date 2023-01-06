@@ -18,8 +18,8 @@ export const ProductSlider: FC<Props> = ({ className, images }) => {
 	return (
 		<figure className={className}>
 
-			<div className="flex space-x-5">
-				<div className="">
+			<div className="flex sm:space-x-3 xl:space-x-5">
+				<div className="hidden sm:block">
 					<div className="flex justify-between">
 						<SliderBtn
 							onClick={() => {
@@ -58,7 +58,7 @@ export const ProductSlider: FC<Props> = ({ className, images }) => {
 					</div>
 				</div>
 
-				<div ref={initializeElements} className="flex-grow flex scroll-smooth overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-grey-100">
+				<div ref={initializeElements} className="flex-grow flex space-x-6 scroll-smooth overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-grey-100">
 					{images.map((img) => (
 						<Image
 							key={img.id}

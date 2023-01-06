@@ -13,18 +13,19 @@ const logos = [
 
 interface Props {
 	size: 'small' | 'regular';
+	className: string;
 }
 
-export const PaymentLogos: FC<Props> = ({ size }) => {
+export const PaymentLogos: FC<Props> = ({ size, className }) => {
 	return (
-		<figure className="flex justify-between space-x-2">
+		<figure className={className}>
 			{logos.map(([name, url]) => (
 				<Image key={name}
 					src={url}
 					alt={name}
 					height={22}
 					width={85}
-					className={`object-cover w-auto h-[22px] ${size === 'small' ? 'h-4' : 'h-[22px]'}`}
+					className={`object-cover mt-3 xl:mt-0 w-auto h-[22px] ${size === 'small' ? 'h-4' : 'h-[22px]'}`}
 				/>
 			))}
 		</figure>

@@ -68,18 +68,18 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 	if (!skuData || !images) return null;
 
 	return (
-		<section className="md:py-7">
+		<section className="py-4 md:py-7">
 			<div className="container">
-				<div className="flex space-x-6">
-					<ProductSlider images={images} className='flex-1 basis-1/2' />
-					<div className='flex-1 basis-1/2'>
+				<div className="flex flex-col lg:flex-row lg:space-x-3 xl:space-x-6">
+					<ProductSlider images={images} className='flex-1 lg:basis-3/5 xl:basis-1/2' />
+					<div className='mt-6 lg:mt-0 flex-1 lg:basis-2/5 xl:basis-1/2'>
 
 						{/* Product variations (or options)  */}
 						<div className="mb-2">
 							<span className="uppercase text-dark/60">Color:</span>
 							<span className="ml-2 font-semibold">{color ? capitalize(color.name) : 'All'}</span>
 						</div>
-						<div className="flex space-x-4">
+						<div className="flex flex-wrap space-x-4">
 							{skuData.colors.map(({ id, name, image }) => (
 								<button
 									key={id}
@@ -102,7 +102,7 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 							<span className="uppercase text-dark/60">Size:</span>
 							<span className="ml-2 font-semibold">{size ? capitalize(size.name) : 'All'}</span>
 						</div>
-						<div className="flex space-x-4">
+						<div className="flex flex-wrap space-x-4">
 							{skuData.sizes.map(({ id, name }) => (
 								<button
 									key={id}
@@ -127,14 +127,14 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 						<div className="flex space-x-4 items-center">
 							{skuData.discount ? (
 								<div className="flex-center flex-col">
-									<del className="leading-none">{skuData.priceBase}</del>
-									<span className="text-2xl leading-none font-semibold">$ {skuData.priceBase * skuData.discount / 100}</span>
+									<del className="leading-none">$&nbsp;{skuData.priceBase}</del>
+									<span className="text-2xl leading-none font-semibold">$&nbsp;{skuData.priceBase * skuData.discount / 100}</span>
 								</div>
 							) : (
-								<span className="text-xl font-semibold">$ {skuData.priceBase}</span>
+								<span className="text-xl font-semibold">$&nbsp;{skuData.priceBase}</span>
 							)}
 
-							<button className="px-4 py-2 text-sm font-semibold uppercase bg-dark text-white outline-offset-2">Add To Card</button>
+							<button className="px-4 py-2 text-sm font-semibold uppercase bg-dark text-white outline-offset-2 whitespace-nowrap">Add To Card</button>
 
 							<Icon name="heart" size={25} />
 							<Icon name="scale" size={25} />
@@ -160,7 +160,7 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 
 						<Divider heading="guaranteed safe checkout" />
 
-						<PaymentLogos size="regular" />
+						<PaymentLogos className="-mt-3 xl:mt-0 flex justify-center flex-wrap xl:flex-nowrap space-x-2" size="regular" />
 
 						<Divider />
 
@@ -188,11 +188,11 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 						{/* ProductReviews */}
 						<h2 className="mb-6 uppercase text-dark font-semibold">Reviews</h2>
 						<div className="mb-6 flex justify-between items-center space-x-4 text-dark/60">
-							<span className="flex-grow flex items-center space-x-2">
+							<span className="flex-grow flex flex-wrap items-center space-x-2">
 								<Rating value={skuData.rating} size="small" className="-mt-1" />
-								<span>{skuData.reviews.length} Reviews</span>
+								<span className="whitespace-nowrap">{skuData.reviews.length} Reviews</span>
 							</span>
-							<button>
+							<button className="whitespace-nowrap">
 								<Icon name='mail' size={20} className='-mt-1 mr-2' />
 								Write a review
 							</button>
@@ -201,10 +201,10 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 						{skuData.reviews.map(({ id, author, content, rating }) => (
 							<article key={id} className="mb-6">
 								<div className="mb-3 flex justify-between space-x-3">
-									<h6>{author}</h6>
+									<h6 className="w-52 truncate">{author}</h6>
 									<Rating value={rating as RatingValue} size='small' />
 								</div>
-								<p className="text-dark/60">{content}</p>
+								<p className="text-dark/60 text-sm">{content}</p>
 							</article>
 						))}
 

@@ -12,7 +12,7 @@ interface Props {
 
 export const Rating: FC<Props> = ({ value, size, className }) => {
 	return (
-		<span className={className}>
+		<span className={'whitespace-nowrap ' + className}>
 			{Array.from({ length: 5 }, (_, index) => (
 				<Icon
 					key={index}

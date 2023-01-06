@@ -45,18 +45,18 @@ export const ProductHeader: FC<Props> = ({ sku }) => {
 				<h1 className="my-3 text-2xl font-semibold text-center">{data.name}</h1>
 
 				<div className="flex items-center flex-col-reverse sm:flex-row sm:space-x-4 text-sm">
-					<span className="flex-grow flex items-center space-x-2">
+					<span className="flex-grow flex items-center space-x-2 text-dark/60">
 						<Rating value={data.rating} size="small" className="-mt-1" />
 						<span>{data.reviewCount} Reviews</span>
 					</span>
 
 					<span>
-						<span>SKU:</span>
+						<span className="text-dark/60">SKU:</span>
 						<span className="pl-1 font-semibold">{data.sku}</span>
 					</span>
 
 					<span>
-						<span>Availability:</span>
+						<span className="text-dark/60">Availability:</span>
 						<span className="pl-1 font-semibold">{data.available ? 'In Stock' : 'Out Of Stock'}</span>
 					</span>
 				</div>
