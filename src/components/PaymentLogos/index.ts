@@ -1,0 +1,1 @@
+export { PaymentLogos } from './PaymentLogos';
