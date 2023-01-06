@@ -1,4 +1,4 @@
-import { FC, useEffect, useId, useReducer, useRef, useState } from "react";
+import { FC, memo, useEffect, useId, useReducer, useRef, useState } from "react";
 import { SliderBtn } from "../Slider";
 import type { Image as ImageType } from '@prisma/client';
 import Image from "next/image";
@@ -19,7 +19,7 @@ export const ProductSlider: FC<Props> = ({ className, images }) => {
 		<figure className={className}>
 
 			<div className="flex space-x-5">
-				<div className="w-24">
+				<div className="">
 					<div className="flex justify-between">
 						<SliderBtn
 							onClick={() => {
@@ -39,19 +39,21 @@ export const ProductSlider: FC<Props> = ({ className, images }) => {
 						/>
 					</div>
 
-					<div ref={initializePreviews} className="h-[520px] flex flex-col gap-7 scroll-smooth overflow-y-auto scrollbar-hide snap-y snap-mandatory">
+					<div ref={initializePreviews} className="h-[520px] flex flex-col space-y-7 scroll-smooth overflow-y-auto scrollbar-hide snap-y snap-mandatory">
 						{images.map((img, index) => (
-							<Image
+							<button
 								key={img.id}
-								src={URL_IMG + img.url}
-								alt="product image"
-								className='object-cover h-28 w-24 snap-always snap-start flex-0'
-								width={96}
-								height={112}
-								onClick={() => {
-									selectElement(index);
-								}}
-							/>
+								className='h-28 w-[72px] snap-always snap-start flex-0'
+								onClick={() => selectElement(index)}
+							>
+								<Image
+									src={URL_IMG + img.url}
+									alt="product image"
+									className='object-cover w-full h-full'
+									width={96}
+									height={112}
+								/>
+							</button>
 						))}
 					</div>
 				</div>
@@ -62,7 +64,7 @@ export const ProductSlider: FC<Props> = ({ className, images }) => {
 							key={img.id}
 							src={URL_IMG + img.url}
 							alt="product image"
-							className="object-cover flex-grow-0 flex-shrink-0 snap-always snap-center"
+							className="object-cover flex-0 snap-always snap-start"
 							width={380}
 							height={560}
 						/>
