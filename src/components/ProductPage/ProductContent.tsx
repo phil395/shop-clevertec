@@ -1,5 +1,5 @@
-import { Prisma } from "@prisma/client";
-import { FC, useMemo, useReducer, useState } from "react";
+import { Image as ImageType } from "@prisma/client";
+import { FC, useMemo, useState } from "react";
 import Image from 'next/image';
 import { trpc } from "../../utils/trpc";
 import { ProductSlider } from "./ProductSlider";
@@ -10,6 +10,7 @@ import { Icon } from "../Icon";
 import { Divider } from "../Divider";
 import { PaymentLogos } from "../PaymentLogos";
 import { Rating, RatingValue } from "../Rating";
+import { Slider } from "../Slider/Slider";
 
 interface Props {
 	sku: number;
@@ -36,6 +37,7 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 		return {
 			sku: data.sku,
 			name: data.name,
+			catalog: { name: data.category.name, slug: data.category.slug },
 			priceBase: data.priceBase,
 			discount: data.discount,
 			rating: data.rating as RatingValue,
@@ -50,30 +52,39 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 	const [color, setColor] = useState<Feature>();
 	const [size, setSize] = useState<Feature>();
 
-	const images = useMemo(() => {
+	const imageUrls = useMemo(() => {
 		if (!skuData) return;
-		return skuData.products.flatMap(product => {
-			const isSelectedColor = product.colorId === color?.id;
-			const isSelectedSize = product.sizeId === size?.id;
-			const addImages = () => product.images.map(img => img);
-			if (!color && !size) return addImages();
-			if (isSelectedColor && isSelectedSize) return addImages();
+		const imgSet = new Set<ImageType['url']>();
 
-			if (!color && isSelectedSize) return addImages();
-			if (isSelectedColor && !size) return addImages();
-			return []; // not add
-		});
+		const addImages = (images: ImageType[]) => {
+			for (const img of images) {
+				imgSet.add(img.url);
+			}
+		};
+
+		for (const { images, colorId, sizeId } of skuData.products) {
+			const isSelectedColor = colorId === color?.id;
+			const isSelectedSize = sizeId === size?.id;
+
+			if (!color && !size) addImages(images);
+			if (isSelectedColor && isSelectedSize) addImages(images);
+
+			if (!color && isSelectedSize) addImages(images);
+			if (isSelectedColor && !size) addImages(images);
+		}
+
+		return Array.from(imgSet);
 	}, [color, size, skuData]);
 
-	if (!skuData || !images) return null;
+	if (!skuData || !imageUrls) return null;
 
 	return (
 		<section className="py-4 md:py-7">
 			<div className="container">
 				<div className="flex flex-col lg:flex-row lg:space-x-3 xl:space-x-6">
-					<ProductSlider images={images} className='flex-1 lg:basis-3/5 xl:basis-1/2' />
-					<div className='mt-6 lg:mt-0 flex-1 lg:basis-2/5 xl:basis-1/2'>
+					<ProductSlider imageUrls={imageUrls} className='flex-1 lg:basis-3/5 xl:basis-1/2 overflow-hidden' />
 
+					<div className='mt-6 lg:mt-0 flex-1 lg:basis-2/5 xl:basis-1/2'>
 						{/* Product variations (or options)  */}
 						<div className="mb-2">
 							<span className="uppercase text-dark/60">Color:</span>
@@ -128,7 +139,7 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 							{skuData.discount ? (
 								<div className="flex-center flex-col">
 									<del className="leading-none">$&nbsp;{skuData.priceBase}</del>
-									<span className="text-2xl leading-none font-semibold">$&nbsp;{skuData.priceBase * skuData.discount / 100}</span>
+									<span className="text-2xl leading-none font-semibold">$&nbsp;{(skuData.priceBase * skuData.discount / 100).toFixed(2)}</span>
 								</div>
 							) : (
 								<span className="text-xl font-semibold">$&nbsp;{skuData.priceBase}</span>
@@ -207,9 +218,17 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 								<p className="text-dark/60 text-sm">{content}</p>
 							</article>
 						))}
-
 					</div>
 				</div>
+
+				<Slider
+					className="mt-8"
+					heading="Related Products"
+					type="regular"
+					excludeSku={skuData.sku}
+					catalog={skuData.catalog}
+				/>
+
 			</div>
 		</section>
 	);

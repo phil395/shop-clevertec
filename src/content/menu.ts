@@ -55,43 +55,43 @@ export const MENU: Menu[] = [
 		]
 	},
 	{
-		title: 'Man',
-		link: '/man',
+		title: 'Men',
+		link: '/men',
 		catalog: [
 			{
 				group: 'tops',
 				links: [
-					{ name: 'Awesome', href: '/man' },
-					{ name: 'Beachwear', href: '/man' },
-					{ name: 'Beige', href: '/man' },
-					{ name: 'Cool', href: '/man' },
-					{ name: 'New Dress', href: '/man' },
-					{ name: 'Gap', href: '/man' },
-					{ name: 'Guess', href: '/man' },
+					{ name: 'Awesome', href: '/men' },
+					{ name: 'Beachwear', href: '/men' },
+					{ name: 'Beige', href: '/men' },
+					{ name: 'Cool', href: '/men' },
+					{ name: 'New Dress', href: '/men' },
+					{ name: 'Gap', href: '/men' },
+					{ name: 'Guess', href: '/men' },
 				]
 			},
 			{
 				group: 'bottoms',
 				links: [
-					{ name: 'Jeans', href: '/man' },
-					{ name: 'Lacoste', href: '/man' },
-					{ name: 'Levi\'s', href: '/man' },
-					{ name: 'Model', href: '/man' },
-					{ name: 'Nice Featured', href: '/man' },
-					{ name: 'Polo', href: '/man' },
-					{ name: 'Pullover', href: '/man' },
+					{ name: 'Jeans', href: '/men' },
+					{ name: 'Lacoste', href: '/men' },
+					{ name: 'Levi\'s', href: '/men' },
+					{ name: 'Model', href: '/men' },
+					{ name: 'Nice Featured', href: '/men' },
+					{ name: 'Polo', href: '/men' },
+					{ name: 'Pullover', href: '/men' },
 				]
 			},
 			{
 				group: 'accessories',
 				links: [
-					{ name: 'Scarf Sale 13%', href: '/man' },
-					{ name: 'Shirt', href: '/man' },
-					{ name: 'Shoes', href: '/man' },
-					{ name: 'Shorts', href: '/man' },
-					{ name: 'Summer', href: '/man' },
-					{ name: 'Sunglasses', href: '/man' },
-					{ name: 'Vintage', href: '/man' },
+					{ name: 'Scarf Sale 13%', href: '/men' },
+					{ name: 'Shirt', href: '/men' },
+					{ name: 'Shoes', href: '/men' },
+					{ name: 'Shorts', href: '/men' },
+					{ name: 'Summer', href: '/men' },
+					{ name: 'Sunglasses', href: '/men' },
+					{ name: 'Vintage', href: '/men' },
 				]
 			},
 		]

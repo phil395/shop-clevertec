@@ -17,7 +17,8 @@ module.exports = {
       'sm': '480px',
       'md': '576px',
       'lg': '768px',
-      'xl': '992px'
+      'xl': '992px',
+      '2xl': '1110px'
     },
     colors: {
       transparent: 'transparent',
@@ -54,7 +55,7 @@ module.exports = {
         //   borderRadius: theme('borderRadius.sm')
         // },
         '.container': {
-          maxWidth: theme('screens.xl'),
+          maxWidth: theme('screens.2xl'),
         },
       });
       addVariant('not-last', '&:not(:last-child)');
