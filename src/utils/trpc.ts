@@ -34,7 +34,11 @@ export const trpc = createTRPCNext<AppRouter>({
 			queryClientConfig: {
 				defaultOptions: {
 					queries: {
-						refetchOnWindowFocus: false
+						refetchOnWindowFocus: false,
+						refetchOnMount: false,
+						cacheTime: 1 * 60 * 60 * 1000, // 1 hour
+						staleTime: 1 * 60 * 60 * 1000,
+						retry: 1
 						// staleTime: 60
 					}
 				}
