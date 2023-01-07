@@ -1,10 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 interface ISliderController {
 	previews?: HTMLElement[];
 	elements?: HTMLElement[];
+
+	previewsRoot?: HTMLElement;
 	elementsRoot?: HTMLElement;
-	// rootBounds?: DOMRectReadOnly;
+
 	subscribers: ISubscribers;
 }
 
@@ -27,10 +29,22 @@ type ContainerType = Extract<keyof ISliderController, 'elements' | 'previews'>;
 export const useSlider = () => {
 	const controller = useRef<ISliderController>({ subscribers: {} } /* initController */);
 
+	const getDirection = (root: HTMLElement) => {
+		const { scrollWidth, offsetWidth, scrollHeight, offsetHeight } = root;
+
+		if (scrollWidth > offsetWidth) {
+			return 'vertical';
+		}
+
+		if (scrollHeight > offsetHeight) {
+			return 'horizontal';
+		}
+	};
+
 
 	const selectPreview = (element: HTMLElement) => {
-		const { previews, elements } = controller.current;
-		if (!previews || !elements) return;
+		const { previews, elements, previewsRoot } = controller.current;
+		if (!previews || !elements || !previewsRoot) return;
 
 		// find target element
 		const index = elements.indexOf(element);
@@ -44,9 +58,13 @@ export const useSlider = () => {
 		targetPreview.classList.remove(CSS_CLASS.inactivePreview);
 
 		// treat scroll
-		const { offsetTop } = targetPreview;
-		const previewRoot = targetPreview.parentElement;
-		previewRoot?.scrollTo(0, offsetTop);
+		const { offsetTop, offsetLeft } = targetPreview;
+		const direction = getDirection(previewsRoot);
+		if (!direction) return;
+		const args: readonly [number, number] = direction === 'vertical'
+			? [offsetLeft, 0]
+			: [0, offsetTop];
+		previewsRoot.scrollTo(...args);
 	};
 
 
@@ -60,21 +78,24 @@ export const useSlider = () => {
 		}
 		const targetElement = elements[index];
 		const { offsetLeft } = targetElement;
+		// always vertical direction
+		console.log({ index, elements, previews: controller.current.previews });
 		elementsRoot.scrollTo(offsetLeft, 0);
 	};
 
 
-	const toggleSlide = (direction: 'left' | 'right') => {
+	const toggleSlide = (type: 'next' | 'prev') => {
 		return () => {
 			const { elementsRoot } = controller.current;
 			if (!elementsRoot) return;
-			const { width } = elementsRoot.getBoundingClientRect();
+			const { width, height } = elementsRoot.getBoundingClientRect();
 
-			if (direction === 'left') {
-				elementsRoot.scrollBy(width, 0);
-			} else {
-				elementsRoot.scrollBy(0 - width, 0);
-			}
+			const direction = getDirection(elementsRoot);
+			if (!direction) return;
+			const args: readonly [number, number] = direction === 'vertical'
+				? [(type === 'next' ? width : -width), 0]
+				: [0, (type === 'next' ? height : -height)];
+			elementsRoot.scrollBy(...args);
 		};
 	};
 
@@ -128,12 +149,17 @@ export const useSlider = () => {
 		return (node: HTMLElement | null) => {
 			if (!node) {
 				controller.current = { subscribers: {} }; // reset Controller
+				console.log('unsubscribe');
 				return;
 			}
 			controller.current[type] = Array.from(node.children) as HTMLElement[];
 			node.classList.add(CSS_CLASS.relative); // set as offsetParent
-			if (type === 'previews') return;
-			controller.current.elementsRoot = node;
+
+			if (type === 'previews') {
+				controller.current.previewsRoot = node;
+			} else {
+				controller.current.elementsRoot = node;
+			}
 		};
 	};
 
@@ -142,23 +168,23 @@ export const useSlider = () => {
 		return (callback: ISubscribers[T]) => {
 			const { subscribers } = controller.current;
 			subscribers[type] = callback;
-			console.log('Add subscriber', { type, callback, subscribers });
+			// console.log('Add subscriber', { type, callback, subscribers });
 
 			return () => {
 				subscribers[type] = undefined;
-				console.log('Remove subscriber', { type, callback, subscribers });
+				// console.log('Remove subscriber', { type, callback, subscribers });
 			};
 		};
 	};
 
-	// TODO: add useMemo
-	return {
-		initializeElements: initializeController('elements'),
-		initializePreviews: initializeController('previews'),
-		nextSlide: toggleSlide('right'),
-		prevSlide: toggleSlide('left'),
+
+	return useMemo(() => ({
+		elementsRef: initializeController('elements'),
+		previewsRef: initializeController('previews'),
+		nextSlide: toggleSlide('next'),
+		prevSlide: toggleSlide('prev'),
 		selectElement, // scrollToElement,
 		subscribeOnFirst: subscribe('onFirstSlide'),
 		subscribeOnLast: subscribe('onLastSlide')
-	};
+	}), []);
 };
