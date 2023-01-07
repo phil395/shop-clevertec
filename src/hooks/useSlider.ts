@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef } from "react";
 
 interface ISliderController {
-	previews?: HTMLElement[];
-	elements?: HTMLElement[];
+	previews?: HTMLCollection;
+	elements?: HTMLCollection;
 
 	previewsRoot?: HTMLElement;
 	elementsRoot?: HTMLElement;
@@ -47,8 +47,8 @@ export const useSlider = () => {
 		if (!previews || !elements || !previewsRoot) return;
 
 		// find target element
-		const index = elements.indexOf(element);
-		const targetPreview = previews[index];
+		const index = Array.prototype.indexOf.call(elements, element);
+		const targetPreview = previews[index] as HTMLElement;
 		if (!targetPreview) return;
 
 		// treat classes
@@ -76,10 +76,9 @@ export const useSlider = () => {
 		) {
 			return;
 		}
-		const targetElement = elements[index];
+		const targetElement = elements[index] as HTMLElement;
 		const { offsetLeft } = targetElement;
 		// always vertical direction
-		console.log({ index, elements, previews: controller.current.previews });
 		elementsRoot.scrollTo(offsetLeft, 0);
 	};
 
@@ -152,8 +151,8 @@ export const useSlider = () => {
 				console.log('unsubscribe');
 				return;
 			}
-			controller.current[type] = Array.from(node.children) as HTMLElement[];
-			node.classList.add(CSS_CLASS.relative); // set as offsetParent
+			controller.current[type] = node.children; // this must be a live collection
+			node.classList.add(CSS_CLASS.relative);   // set as offsetParent
 
 			if (type === 'previews') {
 				controller.current.previewsRoot = node;
@@ -168,11 +167,9 @@ export const useSlider = () => {
 		return (callback: ISubscribers[T]) => {
 			const { subscribers } = controller.current;
 			subscribers[type] = callback;
-			// console.log('Add subscriber', { type, callback, subscribers });
 
 			return () => {
 				subscribers[type] = undefined;
-				// console.log('Remove subscriber', { type, callback, subscribers });
 			};
 		};
 	};
