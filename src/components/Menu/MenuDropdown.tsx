@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Menu } from "../../content";
-import { Bestsellers } from "./Bestsellers";
+import { Slider } from "../Slider/Slider";
 
 type PointerEvents = Pick<
 	React.HTMLAttributes<HTMLDivElement>,
@@ -8,13 +8,14 @@ type PointerEvents = Pick<
 >;
 
 export interface MenuDropdownProps extends PointerEvents {
-	dropdown: Required<Pick<Menu, 'catalog' | 'title'>>;
+	dropdown: Required<Menu>;
 }
 
-export const MenuDropdown: FC<MenuDropdownProps> = ({ dropdown: { title, catalog }, ...pointerEvents }) => {
+export const MenuDropdown: FC<MenuDropdownProps> = ({ dropdown: { title, catalog, link }, ...pointerEvents }) => {
+	console.log({ catalog, title });
 	return (
-		<dialog open {...pointerEvents} className="w-full px-0 py-7 bg-grey-100 before:bg-dark before:h-[2px] before:w-full before:absolute before:top-0">
-			<div className="container flex">
+		<dialog open {...pointerEvents} className="w-full px-0 py-7 z-10 bg-grey-100 shadow-md before:bg-dark before:h-[2px] before:w-full before:absolute before:top-0">
+			<div className="container flex justify-between">
 				<nav className="flex flex-1 mr-4">
 					{catalog.map((column, index) => (
 						<div
@@ -40,7 +41,12 @@ export const MenuDropdown: FC<MenuDropdownProps> = ({ dropdown: { title, catalog
 					))}
 				</nav>
 
-				<Bestsellers catalogTitle={title} />
+				<Slider
+					type="small"
+					catalog={{ name: title.toLowerCase(), slug: link }}
+					heading="Bestsellers"
+					className="w-[576px]"
+				/>
 			</div>
 		</dialog>
 	);

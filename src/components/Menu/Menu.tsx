@@ -29,7 +29,7 @@ export const Menu: FC<Props> = ({ menuPortalRef }) => {
 							className={clsx('py-6 px-3 block relative transition-all', {
 								[styles.active]: dropdown?.title === title
 							})}
-							onPointerEnter={catalog ? () => setDropdown({ catalog, title }) : undefined}
+							onPointerEnter={catalog ? () => setDropdown({ title, link, catalog }) : undefined}
 							onPointerLeave={catalog ? () => setDropdown(null) : undefined}
 							href={link}
 						>
