@@ -25,7 +25,7 @@ export const Slider: FC<Props> = ({ type, className, heading, excludeSku, catalo
 		<section className={'overflow-hidden ' + className}>
 			<div className={`flex items-center ${type === 'regular' ? 'mb-5' : 'mb-3'} -mt-2`}>
 
-				<h3 className={`uppercase font-semibold flex-grow ${type === 'regular' ? 'text-xl' : null}`}>{heading}</h3>
+				<h3 className={`uppercase text-dark font-semibold flex-grow ${type === 'regular' ? 'text-xl' : null}`}>{heading}</h3>
 
 				<button
 					onClick={prevSlide}
@@ -41,7 +41,9 @@ export const Slider: FC<Props> = ({ type, className, heading, excludeSku, catalo
 				</button>
 			</div>
 
-			<div ref={elementsRef} className="flex space-x-6 overflow-x-scroll overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory">
+			<div ref={elementsRef} className={clsx('flex space-x-6 overflow-x-scroll overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory', {
+				['2xl:space-x-14']: type === 'regular'
+			})}>
 				{items.map(({ name, priceBase, discount, rating, sku, products }) => {
 					if (sku === excludeSku) return null;
 					return (
