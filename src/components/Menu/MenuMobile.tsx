@@ -2,17 +2,20 @@ import { FC, useState } from "react";
 import { MENU } from "../../content";
 import { ScreenState, useMatchMedia } from "../../hooks";
 import { Portal } from "../Portal";
+import { Slider } from "../Slider/Slider";
 import { Hamburger } from "./Hamburger";
 
 interface Props {
 	menuPortalRef: React.RefObject<HTMLDivElement>;
 }
 
+const DEFAULT_CATALOG = { name: MENU[1].title.toLowerCase(), slug: MENU[1].link };
+
 const List: FC<{}> = () => {
-	return <ul className="flex flex-row space-y-5 text-dark">
+	return <ul className="flex flex-col text-dark flex-grow flex-shrink-0 basis-60">
 		{MENU.map(({ title, link }, index) => (
 			<li key={index}>
-				<a href={link}>{title}</a>
+				<a href={link} className="my-1 py-2 block text-xl text-center hover:font-semibold transition-all">{title}</a>
 			</li>
 		))}
 	</ul>;
@@ -53,8 +56,9 @@ export const MenuMobile: FC<Props> = ({ menuPortalRef }) => {
 
 			{isActive ? (
 				<Portal portalRef={menuPortalRef}>
-					<div className="text-green text-2xl text-center">
-						Mobile menu portal
+					<div className="py-4 container flex">
+						<List />
+						<Slider catalog={DEFAULT_CATALOG} type="small" heading="Bestsellers" className="mt-4 max-w-[576px] max-sm:hidden" />
 					</div>
 				</Portal>
 			) : null}
