@@ -1,5 +1,5 @@
 import { Image as ImageType } from "@prisma/client";
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import Image from 'next/image';
 import { trpc } from "../../utils/trpc";
 import { ProductSlider } from "./ProductSlider";
@@ -75,6 +75,11 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 
 		return Array.from(imgSet);
 	}, [color, size, skuData]);
+
+	useEffect(() => {
+		setColor(undefined);
+		setSize(undefined);
+	}, [sku]);
 
 	if (!skuData || !imageUrls) return null;
 
@@ -212,7 +217,7 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 						{skuData.reviews.map(({ id, author, content, rating }) => (
 							<article key={id} className="mb-6">
 								<div className="mb-3 flex justify-between space-x-3">
-									<h6 className="w-52 truncate">{author}</h6>
+									<h6 className="w-52 truncate text-dark">{author}</h6>
 									<Rating value={rating as RatingValue} size='small' />
 								</div>
 								<p className="text-dark/60 text-sm">{content}</p>
