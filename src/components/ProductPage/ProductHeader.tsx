@@ -42,7 +42,7 @@ export const ProductHeader: FC<Props> = ({ sku }) => {
 					</button>
 				</div>
 
-				<h1 className="my-3 text-2xl font-semibold text-center">{data.name}</h1>
+				<h1 className="my-3 text-2xl font-semibold text-center text-dark">{data.name}</h1>
 
 				<div className="flex items-center flex-col-reverse sm:flex-row sm:space-x-4 text-sm">
 					<span className="flex-grow flex items-center space-x-2 text-dark/60">
