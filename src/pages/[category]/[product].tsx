@@ -8,6 +8,7 @@ import { appRouter } from "../../server/routers/_app";
 import { createContextInner } from "../../server/context";
 import { trpc } from "../../utils/trpc";
 import { ProductContent, ProductHeader } from "../../components/ProductPage";
+import { Footer } from "../../components/Footer";
 
 interface Props {
 	sku: number;
@@ -33,6 +34,8 @@ const ProductPage: FC<Props> = ({ sku }) => {
 			) : (
 				null
 			)}
+
+			<Footer className="mt-8" />
 
 
 		</>
