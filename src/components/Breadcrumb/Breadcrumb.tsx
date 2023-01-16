@@ -9,7 +9,7 @@ interface Props {
 
 export interface BreadcrumbItem {
 	name: string;
-	url?: string;
+	slug?: string;
 }
 
 export const Breadcrumb: FC<Props> = ({ path }) => {
@@ -21,9 +21,9 @@ export const Breadcrumb: FC<Props> = ({ path }) => {
 						key={index}
 						className='inline'
 					>
-						{item.url ? (
+						{item.slug ? (
 							<Link
-								href={item.url}
+								href={item.slug}
 								className="text-dark/60 after:content-['>'] after:pl-4 after:mr-4"
 							>
 								{capitalize(item.name)}
