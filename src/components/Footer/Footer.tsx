@@ -14,8 +14,8 @@ const renderLinks = (links: typeof FOOTER[number]['links']) => {
 	if (links) {
 		return (
 			<ul className="text-dark/80">
-				{links.map(({ link, name }) => (
-					<li className="not-last:mb-2"><Link href={link}>{name}</Link></li>
+				{links.map(({ link, name }, index) => (
+					<li key={index} className="not-last:mb-2"><Link href={link}>{name}</Link></li>
 				))}
 			</ul>
 		);
@@ -47,15 +47,15 @@ export const Footer: FC<Props> = ({ className }) => {
 			</section>
 
 			<section className="container max-sm:mt-2 mb-7 sm:mb-8 flex max-lg:flex-wrap lg:justify-between">
-				{FOOTER.map(({ title, links }) => (
-					<div className="mt-8 max-sm:hidden max-lg:flex-1 max-lg:basis-1/2">
+				{FOOTER.map(({ title, links }, index) => (
+					<div key={index} className="mt-8 max-sm:hidden max-lg:flex-1 max-lg:basis-1/2">
 						<h5 className="mb-3 uppercase font-semibold text-dark">{title}</h5>
 						{renderLinks(links)}
 					</div>
 				))}
 
-				{FOOTER.map(({ title, links }) => (
-					<details className="sm:hidden pt-3 border-b-[1px] border-b-grey-500 flex-shrink-0 flex-grow basis-full group">
+				{FOOTER.map(({ title, links }, index) => (
+					<details key={index} className="sm:hidden pt-3 border-b-[1px] border-b-grey-500 flex-shrink-0 flex-grow basis-full group">
 						<summary className="flex justify-between mb-3 list-none [&+*]:mb-3">
 							{title}
 							<Icon name="arrow" size={20} className="text-dark group-open:rotate-180 group-open:stroke-2 transition-transform" />

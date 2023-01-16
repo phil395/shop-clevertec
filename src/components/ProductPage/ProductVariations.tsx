@@ -6,16 +6,19 @@ import clsx from "clsx";
 import { URL_IMG } from "../../content";
 import { Icon } from "../Icon";
 
+type Setter = (feature: Feature) => void;
+type LatestValue = { color: Feature | undefined, size: Feature | undefined; };
+
 interface Props {
 	colors: ProductColors[];
-	color: Feature | undefined,
-	setColor: React.Dispatch<React.SetStateAction<Feature | undefined>>;
+	setColor: Setter;
 	sizes: ProductSizes[];
-	size: Feature | undefined;
-	setSize: React.Dispatch<React.SetStateAction<Feature | undefined>>;
+	setSize: Setter;
+	values: React.MutableRefObject<LatestValue>;
 }
 
-export const ProductVariations: FC<Props> = ({ colors, color, setColor, sizes, size, setSize }) => {
+export const ProductVariations: FC<Props> = ({ colors, setColor, sizes, setSize, values }) => {
+	const { color, size } = values.current;
 	return (
 		<>
 			<div className="mb-2">
