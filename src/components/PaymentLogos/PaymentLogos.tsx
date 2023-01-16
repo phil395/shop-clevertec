@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import Image from 'next/image';
+import clsx from "clsx";
 
 const logos = [
 	['stripe', '/PaymentSystemsLogos/stripe.png'],
@@ -25,7 +26,11 @@ export const PaymentLogos: FC<Props> = ({ size, className }) => {
 					alt={name}
 					height={22}
 					width={85}
-					className={`object-cover mt-3 xl:mt-0 w-auto h-[22px] ${size === 'small' ? 'h-4' : 'h-[22px]'}`}
+					className={clsx({
+						['object-cover w-auto']: true,
+						['mt-3 xl:mt-0 h-[22px]']: size === "regular",
+						['h-4']: size === 'small'
+					})}
 				/>
 			))}
 		</figure>
