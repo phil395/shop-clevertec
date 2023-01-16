@@ -1,6 +1,6 @@
-import { useState, useMemo, useEffect, useLayoutEffect } from "react";
+import { useState, useMemo, useEffect, useLayoutEffect, useRef } from "react";
 import { trpc } from "../../utils/trpc";
-import { Image as ImageType } from "@prisma/client";
+import { Image as ImageType, Product } from "@prisma/client";
 import { BreadcrumbItem } from "../Breadcrumb";
 
 export type Feature = { name: string, id: number; };
@@ -11,16 +11,16 @@ export type ProductSizes = Feature;
 export const useProduct = (sku: number) => {
 	const [color, setColor] = useState<Feature>();
 	const [size, setSize] = useState<Feature>();
+	const latest = useRef({ color, size });
+	const product = useRef<Product>();
 
 	const { data: response } = trpc.products.bySku.useQuery(sku);
 
-	useEffect(() => {
-		setColor(undefined);
-		setSize(undefined);
-	}, [sku]);
-
 	const data = useMemo(() => {
 		if (!response) return;
+		latest.current.color = undefined;
+		latest.current.size = undefined;
+		product.current = undefined;
 		const { sku, name, category, products, priceBase,
 			discount, rating, reviews, material } = response;
 
@@ -48,34 +48,43 @@ export const useProduct = (sku: number) => {
 		] as BreadcrumbItem[];
 		const reviewCount = reviews.length;
 
+		const set = (type: 'color' | 'size') => {
+			return (feature: Feature) => {
+				if (latest.current[type]?.id === feature.id) return;
+				latest.current[type] = feature;
+				const setter = type === 'color' ? setColor : setSize;
+				setter(feature);
+				const { color, size } = latest.current;
+				if (!color || !size) return;
+				const selectedProduct = products.find(({ colorId, sizeId }) => (
+					colorId === color.id && sizeId === size.id
+				));
+				if (!selectedProduct) return;
+				const { id, sku, colorId, sizeId, rest } = selectedProduct;
+				product.current = { id, sku, colorId, sizeId, rest };
+				// console.log(product.current);
+			};
+		};
+
+		const available = Boolean(products.some(product => product.rest > 0));
+
 		return {
 			sku,
 			products,
 			catalog,
-			header: { sku, name, breadcrumbPath, rating, reviewCount },
-			variations: { colors, color, setColor, sizes, size, setSize },
+			header: { sku, name, breadcrumbPath, rating, reviewCount, available },
+			variations: {
+				colors, setColor: set('color'), sizes, setSize: set('size'), values: latest
+			},
 			cta: { discount, priceBase },
 			info: { colors, sizes, material },
 			reviews: { reviews, rating }
 		};
-
-		// return {
-		// 	sku,
-		// 	name,
-		// 	priceBase,
-		// 	discount,
-		// 	rating,
-		// 	reviews,
-		// 	products,
-		// 	material,
-		// 	catalog: { name: category.name, slug: category.slug },
-		// 	colors: Object.values(colors),
-		// 	sizes: Object.values(sizes),
-		// };
 	}, [response]);
 
 	const imageUrls = useMemo(() => {
 		if (!data) return;
+		const { color, size } = latest.current;
 		const imgSet = new Set<ImageType['url']>();
 
 		const addImages = (images: ImageType[]) => {
@@ -99,9 +108,8 @@ export const useProduct = (sku: number) => {
 	}, [color, size, data]);
 
 
-	if (data && (color || size)) {
-		data.variations.color = color;
-		data.variations.size = size;
+	if (data && product.current) {
+		data.header.available = product.current.rest > 0;
 	}
 
 	return {
