@@ -2,10 +2,9 @@ import clsx from "clsx";
 import type { FC } from "react";
 import { Icon } from "../Icon";
 
-export type RatingValue = 1 | 2 | 3 | 4 | 5;
 
 interface Props {
-	value: RatingValue,
+	value: number,
 	size: 'small' | 'regular',
 	className?: string;
 }

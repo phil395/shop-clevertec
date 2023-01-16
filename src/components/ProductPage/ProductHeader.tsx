@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { trpc } from "../../utils/trpc";
 import { BreadcrumbItem, Breadcrumb } from "../Breadcrumb";
 import { Icon } from "../Icon";
-import { Rating, RatingValue } from "../Rating";
+import { Rating } from "../Rating";
 
 interface Props {
 	sku: number;
@@ -21,7 +21,7 @@ export const ProductHeader: FC<Props> = ({ sku }) => {
 			return {
 				path,
 				name: data.name,
-				rating: data.rating as RatingValue,
+				rating: data.rating,
 				reviewCount: data.reviews.length,
 				sku: data.sku,
 				available: data.products.some(product => product.rest > 0)
