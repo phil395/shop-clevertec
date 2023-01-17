@@ -21,7 +21,7 @@ export const ProductContent: FC<Props> = ({ sku }) => {
 	if (!data || !imageUrls) return null;
 
 	return (
-		<main>
+		<main className="mb-14">
 			<ProductHeader {...data.header} available={true} />
 			<section className="py-4 md:py-7">
 				<div className="container">
