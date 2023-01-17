@@ -65,6 +65,12 @@ module.exports = {
           justifyContent: 'center',
           alignItems: 'center'
         },
+        '.absolute-center': {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        },
         '.flex-0': {
           flex: '0 0 auto'
         },
