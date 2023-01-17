@@ -25,5 +25,23 @@ export const InfoBanner: FC<Props> = ({ type }) => {
 		);
 	}
 
-	return null;
+	return (
+		<div className="flex justify-between">
+			<div className="py-4 grid gap-x-3 grid-cols-[40px,1fr] auto-rows-auto">
+				<Icon name="truck" size={45} className="-mt-1 mr-1 row-span-2 place-self-center" />
+				<span className="uppercase font-semibold">FREE SHIPPING</span>
+				<span>On all UA order or order above $100</span>
+			</div>
+			<div className="py-4 grid gap-x-3 grid-cols-[40px,1fr] auto-rows-auto">
+				<Icon name="refresh" size={45} className="-mt-1 mr-1 row-span-2 place-self-center" />
+				<span className="uppercase font-semibold">FREE SHIPPING</span>
+				<span>On all UA order or order above $100</span>
+			</div>
+			<div className="py-4 grid gap-x-3 grid-cols-[40px,1fr] auto-rows-auto">
+				<Icon name="mail" size={45} className="-mt-1 mr-1 row-span-2 place-self-center" />
+				<span className="uppercase font-semibold">FREE SHIPPING</span>
+				<span>On all UA order or order above $100</span>
+			</div>
+		</div>
+	);
 };
