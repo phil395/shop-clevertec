@@ -7,7 +7,6 @@ import { Layout } from "../../components/Layout";
 import { appRouter } from "../../server/routers/_app";
 import { createContextInner } from "../../server/context";
 import { ProductContent } from "../../components/ProductPage";
-import { Footer } from "../../components/Footer";
 
 interface Props {
 	sku: number;
@@ -23,12 +22,9 @@ const ProductPage: FC<Props> = ({ sku }) => {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</Head>
 
-			<Layout />
-
-			<ProductContent sku={sku} />
-
-			<Footer className="mt-8" />
-
+			<Layout>
+				<ProductContent sku={sku} />
+			</Layout>
 		</>
 	);
 };
