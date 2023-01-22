@@ -14,16 +14,16 @@ const SLIDER_IMG = [
 
 export const Hero: FC<Props> = () => {
 	const { elementsRef } = useSlider();
-	return (
-		<section className="grid grid-cols-4 grid-rows-2 gap-7 h-[490px]">
-			<div ref={elementsRef} className="col-span-2 row-span-2 flex space-x-6 scroll-smooth overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-grey-100">
+	return ( // grid-rows-[1fr,1fr,0.5fr,0.5fr]
+		<section className="grid gap-3 grid-cols-2 grid-rows-[280px,110px,110px] md:h-[490px] md:grid-cols-3 md:grid-rows-3 xl:grid-cols-4 xl:grid-rows-2">
+			<div ref={elementsRef} className="col-span-2 md:row-span-full flex space-x-6 scroll-smooth overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-grey-100">
 				{SLIDER_IMG.map((img, index) => (
-					<figure className="relative flex-0 snap-always snap-start">
+					<figure className="relative flex-0 snap-always snap-center w-full">
 						<Image
 							key={index}
 							src={img.url}
 							alt={img.alt}
-							className="object-cover w-full"
+							className="object-cover w-full h-full"
 							width={540}
 							height={490}
 						/>
@@ -35,7 +35,7 @@ export const Hero: FC<Props> = () => {
 				))}
 			</div>
 
-			<figure className="relative">
+			<figure className="relative ">
 				<Image src="/HomePage/hero_women.jpg"
 					alt="women catalog"
 					width={255}
@@ -45,7 +45,7 @@ export const Hero: FC<Props> = () => {
 				<figcaption className="pt-2 pb-1 px-7 absolute-center uppercase font-semibold bg-white">Women</figcaption>
 			</figure>
 
-			<figure className="relative">
+			<figure className="relative ">
 				<Image src="/HomePage/hero_men.jpg"
 					alt="men catalog"
 					width={255}
@@ -55,7 +55,7 @@ export const Hero: FC<Props> = () => {
 				<figcaption className="pt-2 pb-1 px-7 absolute-center uppercase font-semibold bg-white">Men</figcaption>
 			</figure>
 
-			<figure className="relative col-span-2">
+			<figure className="relative max-md:col-span-2 xl:col-span-2">
 				<Image src="/HomePage/hero_accessories.jpg"
 					alt="women accessories"
 					width={540}
