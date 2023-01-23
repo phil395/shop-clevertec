@@ -1,18 +1,21 @@
 import type { FC } from "react";
 import Image from "next/image";
-import { Rating, RatingValue } from "../Rating";
+import { Rating } from "../Rating";
 import { URL_IMG } from "../../content";
 import Link from "next/link";
 
-interface Props {
+export interface IProductCard {
 	imgSize: 'small' | 'regular';
-	className?: string;
-	url: string;
 	img: string,
+	url: string;
 	title: string,
 	priceBase: number,
 	discount: number;
 	rating: number;
+}
+
+interface Props extends IProductCard {
+	className?: string;
 }
 
 export const ProductCard: FC<Props> = ({ imgSize, className, url, img, title, priceBase: priceBase, discount, rating }) => {
@@ -37,7 +40,7 @@ export const ProductCard: FC<Props> = ({ imgSize, className, url, img, title, pr
 				) : (
 					<span className="font-semibold text-lg text-dark leading-none flex-1">$&nbsp;{priceBase}</span>
 				)}
-				{imgSize === 'regular' ? <Rating size="small" value={rating as RatingValue} /> : null}
+				{imgSize === 'regular' ? <Rating size="small" value={rating} /> : null}
 			</div>
 		</Link>
 	);
