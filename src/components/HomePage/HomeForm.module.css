@@ -1,0 +1,13 @@
+.form {
+	@apply w-80 mt-8 relative flex flex-col space-y-3
+		before:content-[url('/HomePage/home-form-img-1.png')] before:absolute before:-bottom-52 before:-left-[350px] 
+		after:content-[url('/HomePage/home-form-img-2.png')] after:absolute after:-bottom-40 after:-right-72 ;	
+
+	input {
+		@apply flex-1 py-3 bg-grey-100 text-lg border-2 border-transparent placeholder:text-center focus:border-dark focus:ring-0;
+	}
+
+	button {
+		@apply py-3 flex-1 text-white bg-dark uppercase text-lg;
+	}
+}
