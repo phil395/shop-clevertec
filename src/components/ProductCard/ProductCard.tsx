@@ -20,7 +20,7 @@ interface Props extends IProductCard {
 
 export const ProductCard: FC<Props> = ({ imgSize, className, url, img, title, priceBase: priceBase, discount, rating }) => {
 	return (
-		<Link href={url} className={'flex flex-col flex-nowrap ' + className} title={title} >
+		<Link href={url} className={'flex flex-col flex-nowrap overflow-hidden ' + className} title={title} >
 			<Image
 				src={URL_IMG + img}
 				alt={title}
