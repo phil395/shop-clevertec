@@ -48,6 +48,7 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require('@headlessui/tailwindcss'),
     plugin(({ addComponents, addVariant, addUtilities, theme }) => {
       addComponents({
         // '.btn': {
