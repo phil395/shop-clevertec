@@ -52,7 +52,7 @@ export const HomeShowcase: FC<Props> = ({ className, catalog }) => {
 					<button
 						key={index}
 						onClick={() => setSelectedFeature(feature)}
-						className={clsx("not-last:mr-6 hidden uppercase text-dark/60 tracking-wider", {
+						className={clsx("hidden lg:block not-last:mr-5 xl:not-last:mr-6 lg:max-xl:text-sm uppercase text-dark/60 tracking-wider", {
 							['text-dark']: feature.key === selectedFeature.key
 						})}
 					>
@@ -60,12 +60,12 @@ export const HomeShowcase: FC<Props> = ({ className, catalog }) => {
 					</button>
 				))}
 
-				<Listbox as={'div'} className="relative" value={selectedFeature} onChange={setSelectedFeature}>
+				<Listbox as={'div'} className="lg:hidden relative" value={selectedFeature} onChange={setSelectedFeature}>
 					<Listbox.Button>
 						{selectedFeature.name}
 						<Icon name="arrow" size={15} className="-mt-1 ml-3 inline-block" />
 					</Listbox.Button>
-					<Listbox.Options className="absolute right-0 bg-white shadow-md">
+					<Listbox.Options className="absolute right-0 top-10 bg-white shadow-md">
 						{FEATURES.map((feature, index) => (
 							<Listbox.Option
 								key={index}
