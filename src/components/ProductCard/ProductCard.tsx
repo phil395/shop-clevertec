@@ -33,9 +33,9 @@ export const ProductCard: FC<Props> = ({ imgSize, className, url, img, title, pr
 
 			<div className="flex-0 flex items-end">
 				{discount ? (
-					<span className="flex-1 flex flex-wrap">
-						<span className="mr-2 font-semibold text-lg text-dark leading-none">$&nbsp;{(priceBase * discount / 100).toFixed(2)}</span>
-						<del className="mt-1 font-semibold text-dark/40 leading-none">$&nbsp;{priceBase}</del>
+					<span className="flex-1 flex items-baseline flex-wrap">
+						<span className="mr-2 font-semibold text-base xs:text-lg text-dark leading-none">$&nbsp;{(priceBase * discount / 100).toFixed(2)}</span>
+						<del className="mt-1 font-semibold max-xs:text-sm text-dark/40 leading-3">$&nbsp;{priceBase}</del>
 					</span>
 				) : (
 					<span className="font-semibold text-lg text-dark leading-none flex-1">$&nbsp;{priceBase}</span>
