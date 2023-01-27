@@ -8,6 +8,10 @@
     letter-spacing: 0.05em;
   }
 
+  body {
+    overflow-x: hidden;
+  }
+
   svg {
     display: inline-block;
   }
