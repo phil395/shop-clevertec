@@ -7,9 +7,9 @@ interface Props {
 }
 
 const SLIDER_IMG = [
-	{ url: '/HomePage/hero_main.jpg', alt: 'main slide' },
-	{ url: '/HomePage/hero_main.jpg', alt: 'main slide' },
-	{ url: '/HomePage/hero_main.jpg', alt: 'main slide' },
+	{ url: '/home-page/hero_main.jpg', alt: 'main slide' },
+	{ url: '/home-page/hero_main.jpg', alt: 'main slide' },
+	{ url: '/home-page/hero_main.jpg', alt: 'main slide' },
 ];
 
 export const Hero: FC<Props> = () => {

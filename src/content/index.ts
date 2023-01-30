@@ -6,3 +6,5 @@ export { SOCIALS } from './socials';
 export type { Menu } from './menu';
 export { URL_IMG } from './urlImages';
 export { FOOTER } from './footer';
+export { BLOG_POSTS } from './blogPosts';
+export type { IBlogPost } from './blogPosts';

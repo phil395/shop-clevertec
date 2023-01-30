@@ -8,13 +8,13 @@ interface Props {
 
 const DECORATIONS = [
 	{
-		url: '/HomePage/home-decoration-1.jpg',
+		url: '/home-page/home-decoration-1.jpg',
 		alt: 'home decoration 1',
 		title: [{ text: 'lookbook collection', accent: false }],
 		subtitle: 'New Season'
 	},
 	{
-		url: '/HomePage/home-decoration-2.jpg',
+		url: '/home-page/home-decoration-2.jpg',
 		alt: 'home decoration 2',
 		title: [{ text: 'Get UP to', accent: false }, { text: '50 off', accent: true }],
 		subtitle: 'Sale'

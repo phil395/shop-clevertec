@@ -3,13 +3,13 @@ import Image from 'next/image';
 import clsx from "clsx";
 
 const logos = [
-	['stripe', '/PaymentSystemsLogos/stripe.png'],
-	['aes265', '/PaymentSystemsLogos/aes265.png'],
-	['paypal', '/PaymentSystemsLogos/paypal.png'],
-	['visa', '/PaymentSystemsLogos/visa.png'],
-	['mastercard', '/PaymentSystemsLogos/mastercard.png'],
-	['discover', '/PaymentSystemsLogos/discover.png'],
-	['americanExpress', '/PaymentSystemsLogos/american-express.png'],
+	['stripe', '/payment-systems/stripe.png'],
+	['aes265', '/payment-systems/aes265.png'],
+	['paypal', '/payment-systems/paypal.png'],
+	['visa', '/payment-systems/visa.png'],
+	['mastercard', '/payment-systems/mastercard.png'],
+	['discover', '/payment-systems/discover.png'],
+	['americanExpress', '/payment-systems/american-express.png'],
 ];
 
 interface Props {
