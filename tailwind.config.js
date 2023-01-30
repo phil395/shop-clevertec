@@ -49,6 +49,7 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@headlessui/tailwindcss'),
+    require('@tailwindcss/line-clamp'),
     plugin(({ addComponents, addVariant, addUtilities, theme }) => {
       addComponents({
         // '.btn': {
